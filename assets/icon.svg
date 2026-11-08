@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <mask id="jaw" maskUnits="userSpaceOnUse" x="-300" y="-300" width="600" height="600">
+      <rect x="-300" y="-300" width="600" height="600" fill="#fff"/>
+      <rect x="62" y="-19" width="90" height="38" fill="#000"/>
+      <circle cx="-96" cy="0" r="9" fill="#000"/>
+    </mask>
+    <g id="wrench">
+      <rect x="-114" y="-19" width="170" height="38" rx="19"/>
+      <circle cx="66" cy="0" r="50"/>
+    </g>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="#14202e"/>
+  <!-- monitor -->
+  <rect x="84" y="104" width="344" height="240" rx="26" fill="none" stroke="#e8eef4" stroke-width="24"/>
+  <rect x="234" y="344" width="44" height="42" fill="#e8eef4"/>
+  <rect x="166" y="380" width="180" height="26" rx="13" fill="#e8eef4"/>
+  <!-- the microVM: a box on the screen -->
+  <g stroke="#14202e" stroke-width="4" stroke-linejoin="round">
+    <polygon points="226,160 286,192 226,224 166,192" fill="#7fe0d0"/>
+    <polygon points="166,192 226,224 226,290 166,258" fill="#2bb3a0"/>
+    <polygon points="286,192 226,224 226,290 286,258" fill="#1a8678"/>
+  </g>
+  <!-- wrench across the screen's lower right corner -->
+  <g transform="translate(352,318) rotate(-45)" mask="url(#jaw)">
+    <use xlink:href="#wrench" fill="#14202e" stroke="#14202e" stroke-width="22" stroke-linejoin="round"/>
+    <use xlink:href="#wrench" fill="#f5a524"/>
+  </g>
+</svg>
