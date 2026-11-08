@@ -1,7 +1,9 @@
 # Security policy
 
-These projects exist to contain what runs inside them. A way around that
-containment is a vulnerability, and we want to hear about it.
+Several of these projects exist to contain what runs inside them; a way
+around that containment is a vulnerability, and we want to hear about it.
+So is anything else that lets input to one of these tools do more than it
+should.
 
 ## Reporting
 
@@ -25,11 +27,17 @@ through. A reproduction against the latest release or `main` helps most.
 - **microvm-audit:** target code that escapes `audit-sandbox`, a target
   repository whose Claude configuration takes effect, and evidence that
   reports `valid` for a run that was not contained.
+- **nix-oci:** an input that makes it write outside the output directory, or
+  an image that contains files from outside the closure it was given.
+- **nix-compose:** a service definition or remote request that gets a
+  container more than it declared (host mounts, privileges, ports), or
+  reaches the orchestration API without the access it requires.
 
 ## Out of scope
 
 Vulnerabilities in what these projects build on (QEMU, the Linux kernel,
-microvm.nix, nixpkgs, bubblewrap, the agents themselves) belong upstream.
+microvm.nix, nixpkgs, bubblewrap, containerd, CRI-O, the agents themselves)
+belong upstream.
 Do tell us if one of them breaks our containment, so we can work around it.
 
 ## Supported versions
