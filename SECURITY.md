@@ -28,7 +28,8 @@ through. A reproduction against the latest release or `main` helps most.
   repository whose Claude configuration takes effect, and evidence that
   reports `valid` for a run that was not contained.
 - **nix-oci:** an input that makes it write outside the output directory, or
-  an image that contains files from outside the closure it was given.
+  an image that contains files from none of the inputs it was given (the
+  closure, a base image, extra layers or commands).
 - **nix-compose:** a service definition or remote request that gets a
   container more than it declared (host mounts, privileges, ports), or
   reaches the orchestration API without the access it requires.
