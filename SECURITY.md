@@ -33,6 +33,10 @@ through. A reproduction against the latest release or `main` helps most.
 - **nix-compose:** a service definition or remote request that gets a
   container more than it declared (host mounts, privileges, ports), or
   reaches the orchestration API without the access it requires.
+- **flake-diff-action:** an action input, or content of the pull request, that
+  runs commands beyond the flake evaluation the action documents; a comment
+  step that writes outside the pull request it runs for; and a report that
+  calls a changed attribute identical.
 
 ## Out of scope
 

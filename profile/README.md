@@ -9,6 +9,7 @@ Small, sharp tools built on Nix.
 | [microvm-audit](https://github.com/nix-gizmos/microvm-audit) | Runs a pinned security-audit skill against one commit of a repository in a sealed agent-vm VM. Target code runs in a per-process sandbox. Each run produces a report and evidence of how contained it was. |
 | [nix-oci](https://github.com/nix-gizmos/nix-oci) | Writes a Nix closure as a plain, bit-for-bit reproducible OCI image layout, layered for registry dedup, without a daemon. |
 | [nix-compose](https://github.com/nix-gizmos/nix-compose) | Defines services in Nix or a `nix-compose.yaml` and runs them on containerd or CRI-O, with plan, drift and rollback. |
+| [flake-diff-action](https://github.com/nix-gizmos/flake-diff-action) | Says what a `flake.lock` change does to what a flake builds, from evaluation alone: which attributes change, and which package versions move. A CLI, and a Node-free action for GitHub and Forgejo that posts the report on the pull request. |
 
 ```sh
 WORK_DIR=. nix run github:nix-gizmos/agent-vm
