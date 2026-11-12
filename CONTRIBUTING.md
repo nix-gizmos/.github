@@ -50,21 +50,25 @@ New SSH key*, as key type **Signing Key**. GPG works as well; see
 
 Already pushed unsigned commits? Sign them again where they are, without moving
 the branch, check that the content is exactly what you pushed, then force-push.
-Here `upstream` is the nix-gizmos repository:
+Here `origin` is your fork, which the pull request comes from, and `upstream`
+is the nix-gizmos repository:
 
 ```sh
+b=$(git branch --show-current)
+pushed=$(git rev-parse "origin/$b")       # the tip the pull request shows
 git rebase --exec 'git commit --amend --no-edit --no-verify -S' \
   "$(git merge-base HEAD upstream/main)"
-git diff --quiet '@{u}' && git push --force-with-lease
+git diff --quiet "$pushed" && git push --force-with-lease="$b:$pushed" origin "$b"
 ```
 
-`git diff` against the pushed branch (`@{u}`) must be empty: re-signing changes
-signatures, never content. It matters most on a branch with merge commits
+`git diff` against the pushed tip must be empty: re-signing changes
+signatures, never content. The push goes to that same branch, and only if it
+still points at that tip. The check matters most on a branch with merge commits
 (`main` merged in, say). A plain rebase drops those and replays what they
 brought in, and a resolution made only in a merge is lost. If the rebase stops
 on a conflict (`git rebase --abort`), or the diff is not empty
-(`git reset --hard '@{u}'`), don't push. Say so in the pull request instead, and
-a maintainer squashes it, as described under *How it gets merged*.
+(`git reset --hard "$pushed"`), don't push. Say so in the pull request instead,
+and a maintainer squashes it, as described under *How it gets merged*.
 
 ## Pull requests
 
