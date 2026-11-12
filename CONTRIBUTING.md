@@ -31,10 +31,17 @@ test that fails without it.
 *Verified* on GitHub. SSH signing is the shortest way to get there:
 
 ```sh
+ssh-add ~/.ssh/id_ed25519      # the private key, into your running ssh-agent
 git config --global gpg.format ssh
 git config --global user.signingkey ~/.ssh/id_ed25519.pub
 git config --global commit.gpgsign true
 ```
+
+Named by its `.pub` file, the key signs through ssh-agent, so its private half
+has to be loaded there (`ssh-add -L` lists what is). Without an agent, set
+`user.signingkey` to the private key file instead. Either way, a failing
+signature fails every commit once `commit.gpgsign` is on, so try one with
+`git commit --allow-empty -m test` before you rely on it.
 
 Then add the same public key on GitHub under *Settings → SSH and GPG keys →
 New SSH key*, as key type **Signing Key**. GPG works as well; see
@@ -42,13 +49,22 @@ New SSH key*, as key type **Signing Key**. GPG works as well; see
 `git log --show-signature` shows whether a commit is signed.
 
 Already pushed unsigned commits? Sign them again where they are, without moving
-the branch, then force-push it. Here `upstream` is the nix-gizmos repository:
+the branch, check that the content is exactly what you pushed, then force-push.
+Here `upstream` is the nix-gizmos repository:
 
 ```sh
 git rebase --exec 'git commit --amend --no-edit --no-verify -S' \
   "$(git merge-base HEAD upstream/main)"
-git push --force-with-lease
+git diff --quiet '@{u}' && git push --force-with-lease
 ```
+
+`git diff` against the pushed branch (`@{u}`) must be empty: re-signing changes
+signatures, never content. It matters most on a branch with merge commits
+(`main` merged in, say). A plain rebase drops those and replays what they
+brought in, and a resolution made only in a merge is lost. If the rebase stops
+on a conflict (`git rebase --abort`), or the diff is not empty
+(`git reset --hard '@{u}'`), don't push. Say so in the pull request instead, and
+a maintainer squashes it, as described under *How it gets merged*.
 
 ## Pull requests
 
