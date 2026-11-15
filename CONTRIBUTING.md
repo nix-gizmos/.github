@@ -57,13 +57,15 @@ is the nix-gizmos repository:
 b=$(git branch --show-current)
 pushed=$(git rev-parse "origin/$b")       # the tip the pull request shows
 git rebase --exec 'git commit --amend --no-edit --no-verify -S' \
-  "$(git merge-base HEAD upstream/main)"
-git diff --quiet "$pushed" && git push --force-with-lease="$b:$pushed" origin "$b"
+    "$(git merge-base HEAD upstream/main)" &&
+  git diff --quiet "$pushed" "refs/heads/$b" &&
+  git push --force-with-lease="$b:$pushed" origin "$b"
 ```
 
-`git diff` against the pushed tip must be empty: re-signing changes
-signatures, never content. The push goes to that same branch, and only if it
-still points at that tip. The check matters most on a branch with merge commits
+Each step runs only if the one before succeeded. The diff compares the
+re-signed branch with the pushed tip, commit to commit, and must be empty:
+re-signing changes signatures, never content. The push goes to that same
+branch, and only if it still points at that tip. The check matters most on a branch with merge commits
 (`main` merged in, say). A plain rebase drops those and replays what they
 brought in, and a resolution made only in a merge is lost. If the rebase stops
 on a conflict (`git rebase --abort`), or the diff is not empty
